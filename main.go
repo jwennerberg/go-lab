@@ -1,17 +1,23 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
-	"log"
-	"net/http"
+  "log"
+  "net/http"
+  "github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func ApiHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("go api testing\n"))
+  w.Write([]byte("go api testing\n"))
+}
+
+func HelloHandler(w http.ResponseWriter, r *http.Request) {
+  w.Write([]byte("Hi there!\n"))
 }
 
 func main() {
-	r := mux.NewRouter()
-	r.HandleFunc("/api", ApiHandler)
-	log.Fatal(http.ListenAndServe(":8000", r))
+  http.Handle("/metrics", promhttp.Handler())
+  http.HandleFunc("/hello", HelloHandler)
+  http.HandleFunc("/api", ApiHandler)
+
+  log.Fatal(http.ListenAndServe(":8000", r))
 }
