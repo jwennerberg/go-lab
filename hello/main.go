@@ -24,7 +24,7 @@ func setupRouter() *gin.Engine {
 
   r.GET("/hello/:name", func(c *gin.Context) {
     name := c.Param("name")
-    c.String(http.StatusOK, "Hello %s", name)
+    c.String(http.StatusOK, "Hello %s\n", name)
   })
 
   r.GET("/metrics", prometheusHandler())
