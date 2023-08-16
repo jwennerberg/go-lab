@@ -2,7 +2,7 @@ FROM registry.access.redhat.com/ubi8/go-toolset:1.16.12 AS builder
 
 RUN mkdir -p $HOME/go/src/hello
 WORKDIR $HOME/go/src/hello
-COPY *.go .
+COPY *.go ./
 
 RUN go mod init && \
     go mod tidy && \
