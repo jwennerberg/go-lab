@@ -5,6 +5,7 @@ import (
 
   "github.com/gin-gonic/gin"
   "github.com/prometheus/client_golang/prometheus/promhttp"
+  "github.com/common-nighthawk/go-figure"
 )
 
 func prometheusHandler() gin.HandlerFunc {
@@ -22,9 +23,16 @@ func setupRouter() *gin.Engine {
     c.JSON(http.StatusOK, gin.H{"health": "ok"})
   })
 
+  r.GET("/hello", func(c *gin.Context) {
+    myFigure := figure.NewFigure("Hi", "rectangles", true)
+    figure.Write(c.Writer, myFigure)
+  })
+
   r.GET("/hello/:name", func(c *gin.Context) {
     name := c.Param("name")
-    c.String(http.StatusOK, "Hello %s\n", name)
+    myFigure := figure.NewFigure("Hello " + name, "rectangles", true)
+    figure.Write(c.Writer, myFigure)
+    //c.String(http.StatusOK, "Hello %s\n", name)
   })
 
   r.GET("/metrics", prometheusHandler())
